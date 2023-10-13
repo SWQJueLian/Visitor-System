@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@vant/touch-emulator':
+    specifier: ^1.4.0
+    version: 1.4.0
   axios:
     specifier: ^1.5.1
     version: 1.5.1
@@ -409,6 +412,10 @@ packages:
 
   /@vant/popperjs@1.3.0:
     resolution: {integrity: sha512-hB+czUG+aHtjhaEmCJDuXOep0YTZjdlRR+4MSmIFnkCQIxJaXLQdSsR90XWvAI2yvKUI7TCGqR8pQg2RtvkMHw==}
+    dev: false
+
+  /@vant/touch-emulator@1.4.0:
+    resolution: {integrity: sha512-Zt+zISV0+wpOew2S1siOJ3G22y+hapHAKmXM+FhpvWzsRc4qahaYXatCAITuuXt0EcDp7WvEeTO4F7p9AtX/pw==}
     dev: false
 
   /@vant/use@1.6.0(vue@3.3.4):

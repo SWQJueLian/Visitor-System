@@ -10,6 +10,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vant/touch-emulator": "^1.4.0",
     "axios": "^1.5.1",
     "less": "^4.2.0",
     "pinia": "^2.1.6",
