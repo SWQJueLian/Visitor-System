@@ -10,7 +10,11 @@ const active = ref(0)
 
 <template>
   <div>
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
     <van-tabbar route v-model="active" safe-area-inset-bottom>
       <van-tabbar-item to="/add-invite" icon="calendar-o"
         >邀请访客</van-tabbar-item
