@@ -1,7 +1,8 @@
 // 单独封装请求axios
 import axios from 'axios'
 import { useUserStore } from '@/stores'
-import { showFailToast } from 'vant'
+import { closeToast, showFailToast, showLoadingToast } from 'vant'
+import 'vant/es/toast/style'
 // 请求基础url
 const baseurl = 'http://127.0.0.1:8000'
 
@@ -16,6 +17,12 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    // 请求前统一添加toast提示
+    showLoadingToast({
+      message: '请求中...',
+      forbidClick: true, // 禁止触摸背景，可以当成节流来使用。
+      duration: 20 * 1000 // toast展示最大时长（不要设置成0，无限不就卡死了?）
+    })
     // 统一在请求前添加token
     config.headers['Authorization'] = useUserStore().token
     return config
@@ -34,10 +41,14 @@ axiosInstance.interceptors.response.use(
     // console.log(response)
     const data = response.data
     // 后端返回的code字段非0表示不正常
-    if (response.status === 200 && data.code === 0) {
+    if (
+      (response.status === 200 || response.status === 201) &&
+      data.code === 0
+    ) {
+      closeToast()
       return data // (axios会多包装一层data，提前在响应前拦截并返回，减少后面需要resp.data.data之类的调用...)
     } else {
-      showFailToast(data.message)
+      showFailToast(data.message + 'what?' || '未知错误')
       return Promise.reject(data.message)
     }
   },
