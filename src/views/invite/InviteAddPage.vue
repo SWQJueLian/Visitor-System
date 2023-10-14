@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onActivated, onDeactivated, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { inviteAddService } from '@/apis/invite'
 import { showNotify } from 'vant'
@@ -99,6 +99,14 @@ const route = useRoute()
 employee_data.value['employee_name'] = route.query.username
 employee_data.value['employee_department'] = route.query.department_name
 employee_data.value['employee_id'] = route.query.userid
+
+onActivated(() => {
+  console.log('addinvite activated')
+})
+
+onDeactivated(() => {
+  console.log('addinvite deactivated')
+})
 </script>
 
 <template>

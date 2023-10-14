@@ -22,4 +22,15 @@ async function imageUrlToFile(url, fileName) {
   }
 }
 
-export { imageUrlToFile }
+function isVisitDateExpired(state, date_str) {
+  if (state == 0) {
+    let date1 = new Date(date_str.split(' ')[0])
+    let today = new Date()
+    today.setHours(0)
+    today.setMinutes(0)
+    today.setSeconds(0)
+    return date1 < today
+  }
+  return false
+}
+export { imageUrlToFile, isVisitDateExpired }
