@@ -1,5 +1,10 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { inviteAddService } from '@/apis/invite'
+import { showNotify } from 'vant'
+import 'vant/es/notify/style'
+import VnpKeyboard from '@/components/vant-number-plate/vnp-keyboard.vue'
 
 // 日期选择器只能选一年内的
 const plus_one_year = new Date()
@@ -16,14 +21,14 @@ const current_date = ref([
 const current_time = ref([today.getHours(), today.getMinutes()])
 // 默认提交参数
 const default_post_dict = {
-  vistor_name: '', // 访客名
-  vistor_num: 1, // 访客人数
-  vistor_mobile: '', // 访客手机号
-  vistor_date: '', // 来访日期
+  visitor_name: '', // 访客名
+  visitor_num: 1, // 访客人数
+  visitor_mobile: '', // 访客手机号
+  visit_date: '', // 来访日期
   // vistor_time: '', // 来访时间
-  vistor_car_number: '', // 车牌号码
-  vistor_unit: '', // 访客所属单位
-  vistor_reason: ''
+  visitor_car_number: '', // 车牌号码
+  visitor_unit: '', // 访客所属单位
+  visitor_reason: ''
 }
 // 表单data
 const form_data = ref({ ...default_post_dict })
@@ -47,10 +52,9 @@ const mobile_keyboard_show = ref(false)
 // 日期+时间选择器组
 const vistor_datetimepicker_show = ref(false)
 const onDateTimeConfirm = () => {
-  const date_time_str =
-    current_date.value.join('-') + ' ' + current_time.value.join(':')
   // console.log(date_time_str)
-  form_data.value.vistor_date = date_time_str
+  form_data.value.visit_date =
+    current_date.value.join('-') + ' ' + current_time.value.join(':')
   vistor_datetimepicker_show.value = false
 }
 
@@ -72,12 +76,29 @@ function resetForm() {
   }
 }
 
+// 发送邀请
 async function submitInvite() {
   // 1. 校验表单
   await formRef.value.validate()
-  console.log(formRef.value.getValues())
+  // console.log(formRef.value.getValues())
   // 2. 发送请求添加邀请
+  await inviteAddService({
+    ...formRef.value.getValues(),
+    employee_id: employee_data.value['employee_id']
+  })
+  // 2.1 发送通知
+  showNotify({ type: 'success', message: '邀请成功' })
+  // 2.2 重置表单
+  resetForm()
+  // showToast('添加成功！')
 }
+
+// 初始化员工信息
+const employee_data = ref({})
+const route = useRoute()
+employee_data.value['employee_name'] = route.query.username
+employee_data.value['employee_department'] = route.query.department_name
+employee_data.value['employee_id'] = route.query.userid
 </script>
 
 <template>
@@ -86,13 +107,13 @@ async function submitInvite() {
     <van-form ref="formRef" colon show-error>
       <van-cell-group title="员工信息">
         <van-field
-          v-model="form_data.vistor_name"
+          v-model="employee_data.employee_name"
           readonly
           name="employee_name"
           label="邀请人"
         />
         <van-field
-          v-model="form_data.vistor_name"
+          v-model="employee_data.employee_department"
           readonly
           name="employee_department"
           label="所属部门"
@@ -100,8 +121,8 @@ async function submitInvite() {
       </van-cell-group>
       <van-cell-group title="访客信息">
         <van-field
-          v-model="form_data.vistor_name"
-          name="vistor_name"
+          v-model="form_data.visitor_name"
+          name="visitor_name"
           label="访客姓名 * "
           placeholder="请输入访客姓名"
           :rules="[
@@ -116,10 +137,10 @@ async function submitInvite() {
         <van-field
           label="访客电话 * "
           placeholder="请输入访客电话"
-          v-model="form_data.vistor_mobile"
+          v-model="form_data.visitor_mobile"
           readonly
           clickable
-          name="vistor_mobile"
+          name="visitor_mobile"
           @touchstart.stop="mobile_keyboard_show = true"
           :rules="[
             {
@@ -132,25 +153,24 @@ async function submitInvite() {
           ]"
         />
         <van-number-keyboard
-          v-model="form_data.vistor_mobile"
+          v-model="form_data.visitor_mobile"
           :show="mobile_keyboard_show"
           :maxlength="11"
           @blur="mobile_keyboard_show = false"
         />
 
         <van-field
-          v-model="form_data.vistor_unit"
-          name="vistor_unit"
-          label="所属单位 * "
+          v-model="form_data.visitor_unit"
+          name="visitor_unit"
+          label="所属单位"
           placeholder="请输入所属单位"
-          :rules="[{ required: true }]"
         />
 
-        <van-field name="vistor_num" label="来访人数 * ">
+        <van-field name="visitor_num" label="来访人数 * ">
           <template #input>
             <van-stepper
               default-value="1"
-              v-model.number="form_data.vistor_num"
+              v-model.number="form_data.visitor_num"
               integer
             />
           </template>
@@ -160,8 +180,8 @@ async function submitInvite() {
           label="来访时间 * "
           placeholder="请输入来访时间"
           is-link
-          v-model="form_data.vistor_date"
-          name="vistor_date"
+          v-model="form_data.visit_date"
+          name="visit_date"
           readonly
           clickable
           @click="vistor_datetimepicker_show = true"
@@ -177,7 +197,8 @@ async function submitInvite() {
           @click="vistor_timepicker_show = true"
         /> -->
         <van-field
-          :model-value="form_data.vistor_car_number"
+          v-model="form_data.visitor_car_number"
+          name="visitor_car_number"
           readonly
           label="车牌号码"
           is-link
@@ -185,7 +206,8 @@ async function submitInvite() {
         />
 
         <van-field
-          v-model="form_data.vistor_reason"
+          v-model="form_data.visitor_reason"
+          name="visitor_reason"
           rows="1"
           autosize
           label="来访原因 * "
@@ -261,7 +283,7 @@ async function submitInvite() {
     </van-popup> -->
     <!-- 车牌键盘 -->
     <vnp-keyboard
-      v-model="form_data.vistor_car_number"
+      v-model="form_data.visitor_car_number"
       v-model:show="vistor_car_keyboard_show"
     ></vnp-keyboard>
   </div>

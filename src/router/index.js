@@ -8,7 +8,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Layout,
-      redirect: '/add-invite',
+      redirect: '/oauth',
       children: [
         {
           // 我的邀请
@@ -34,6 +34,16 @@ const router = createRouter({
       // 这个路由，是任何人可以访问的，比如：访客自己、门卫
       path: '/invite-arrive/:invite_id',
       component: () => import('@/views/invite/InviteArrivePage.vue')
+    },
+    {
+      // oauth-url入口
+      path: '/oauth',
+      component: () => import('@/views/oauth/wxwork/WxworkOauth.vue')
+    },
+    {
+      // oauth成功后回调页面
+      path: '/wxwork-oauth',
+      component: () => import('@/views/oauth/wxwork/WxworkOauthFinal.vue')
     }
   ]
 })
