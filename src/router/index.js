@@ -30,10 +30,16 @@ const router = createRouter({
       component: () => import('@/views/invite/InviteDetailPage.vue')
     },
     {
+      // 二维码展示页面
+      // 这个路由，是任何人可以访问的，比如：访客自己、门卫
+      path: '/visitor-info/:invite_id',
+      component: () => import('@/views/visitor/VisitorInfoPage.vue')
+    },
+    {
       // 访客到达-扫描页面
       // 这个路由，是任何人可以访问的，比如：访客自己、门卫
-      path: '/invite-arrive/:invite_id',
-      component: () => import('@/views/invite/InviteArrivePage.vue')
+      path: '/visitor-arrive/:invite_id',
+      component: () => import('@/views/visitor/VisitorArrivePage.vue')
     },
     {
       // oauth-url入口
