@@ -5,28 +5,40 @@ import { useRouter } from 'vue-router'
 import { isVisitDateExpired } from '@/utils/tools'
 
 const router = useRouter()
-const list = ref([])
 const loading = ref(false)
 const finished = ref(false)
 const refreshing = ref(false)
 
-const onLoad = () => {
-  setTimeout(() => {
-    if (refreshing.value) {
-      list.value = []
-      refreshing.value = false
-    }
-
-    for (let i = 0; i < 10; i++) {
-      list.value.push(list.value.length + 1)
-    }
-    loading.value = false
-
-    if (list.value.length >= 40) {
-      finished.value = true
-    }
-  }, 1000)
+const invite_list = ref(null)
+const keyword = ref('')
+const initInviteList = async () => {
+  const resp = await inviteListService({
+    employee_id: JSON.parse(sessionStorage.getItem('userinfo'))['userid'],
+    keyword: keyword.value
+  })
+  console.log(resp)
+  invite_list.value = resp.data
 }
+
+// 初始化数据
+initInviteList()
+
+const handlerInviteDetail = (invite_id) => {
+  router.push(`/invite-detail/${invite_id}`)
+}
+
+const onLoad = async () => {
+  if (refreshing.value) {
+    invite_list.value = []
+    refreshing.value = false
+  }
+
+  await initInviteList()
+  loading.value = false
+  finished.value = true
+}
+
+// 表示正处于刷新列表中
 const onRefresh = () => {
   // 清空列表数据
   finished.value = false
@@ -36,23 +48,6 @@ const onRefresh = () => {
   loading.value = true
   onLoad()
 }
-
-const invite_list = ref(null)
-const keyword = ref('')
-const initInviteList = async () => {
-  const resp = await inviteListService({
-    employee_id: 'SongWeiQuan',
-    keyword: keyword.value
-  })
-  console.log(resp)
-  invite_list.value = resp.data
-}
-
-const handlerInviteDetail = (invite_id) => {
-  router.push(`/invite-detail/${invite_id}`)
-}
-
-initInviteList()
 
 async function handlerSearchButton() {
   await initInviteList()
@@ -97,7 +92,6 @@ onDeactivated(() => {
             :title="`${item.visitor_name}`"
             is-link
             center
-            :label="item.visit_date"
             @click="handlerInviteDetail(item.id)"
           >
             <template #value>

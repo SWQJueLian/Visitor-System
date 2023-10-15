@@ -18,7 +18,8 @@ const initPage = async () => {
   userinfo.value = response.data
 
   if (userinfo.value.userid !== '') {
-    router.push({ path: '/add-invite', query: { ...userinfo.value } })
+    sessionStorage.setItem('userinfo', JSON.stringify(userinfo.value))
+    router.replace({ path: '/add-invite', query: { ...userinfo.value } })
   } else {
     console.error('获取员工id失败')
     // 弹出对话框？询问用户是否跳转到重新授权页面？
@@ -43,8 +44,8 @@ initPage()
 <template>
   <div>
     <!--oauth获取页面code-->
-    <!--<p>CODE：{{ code }}</p>-->
-    <!--<p>USERINFO：{{ userinfo }}</p>-->
+    <p>CODE：{{ code }}</p>
+    <p>USERINFO：{{ userinfo }}</p>
     <van-loading color="#1989fa" />
   </div>
 </template>

@@ -1,6 +1,5 @@
 <script setup>
 import { onActivated, onDeactivated, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { inviteAddService } from '@/apis/invite'
 import { showNotify } from 'vant'
 import 'vant/es/notify/style'
@@ -95,10 +94,11 @@ async function submitInvite() {
 
 // 初始化员工信息
 const employee_data = ref({})
-const route = useRoute()
-employee_data.value['employee_name'] = route.query.username
-employee_data.value['employee_department'] = route.query.department_name
-employee_data.value['employee_id'] = route.query.userid
+const userinfo_obj = JSON.parse(sessionStorage.getItem('userinfo'))
+console.log(JSON.parse(sessionStorage.getItem('userinfo')))
+employee_data.value['employee_name'] = userinfo_obj?.username
+employee_data.value['employee_department'] = userinfo_obj?.department_name
+employee_data.value['employee_id'] = userinfo_obj?.userid
 
 onActivated(() => {
   console.log('addinvite activated')
@@ -209,6 +209,7 @@ onDeactivated(() => {
           name="visitor_car_number"
           readonly
           label="车牌号码"
+          placeholder="请输入车牌号"
           is-link
           @click="vistor_car_keyboard_show = true"
         />

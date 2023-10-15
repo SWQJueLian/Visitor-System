@@ -4,11 +4,12 @@ import { useUserStore } from '@/stores'
 import { closeToast, showFailToast, showLoadingToast } from 'vant'
 import 'vant/es/toast/style'
 // 请求基础url
-const baseurl = 'http://127.0.0.1:8000'
+const baseurl = 'https://95ac-116-22-23-243.ngrok-free.app'
+const baseapiurl = baseurl + '/api'
 
 // axios实例
 const axiosInstance = axios.create({
-  baseURL: baseurl,
+  baseURL: baseapiurl,
   timeout: 10000
 })
 
@@ -25,6 +26,8 @@ axiosInstance.interceptors.request.use(
     })
     // 统一在请求前添加token
     config.headers['Authorization'] = useUserStore().token
+    // 丢你妈的ngrok...
+    config.headers['ngrok-skip-browser-warning'] = 'true'
     return config
   },
   function (error) {

@@ -76,8 +76,8 @@ const onDateTimeCancel = () => {
   vistor_datetimepicker_show.value = false
 }
 
-// 生成访客链接
-const visit_url = ref(`${baseurl}/invite-arrive/${invite_id}`)
+// 生成访客二维码链接
+const visit_url = ref(`${baseurl}/visitor-info/${invite_id}`)
 
 // 一键复制访客链接到剪辑版
 function handlerCopy() {
@@ -101,7 +101,7 @@ const disable_update_btn = computed(() => {
 </script>
 
 <template>
-  <div style="margin-bottom: 65px">
+  <div class="van-safe-area-bottom">
     <van-nav-bar
       fixed
       title="访客详情"
@@ -110,6 +110,7 @@ const disable_update_btn = computed(() => {
       @click-left="router.back()"
     />
     <van-form
+      style="margin-top: 45px"
       ref="formRef"
       colon
       show-error
@@ -218,6 +219,7 @@ const disable_update_btn = computed(() => {
         <van-field
           v-model="form_data.visitor_car_number"
           name="visitor_car_number"
+          placeholder="请输入车牌号"
           readonly
           label="车牌号码"
           is-link
@@ -237,11 +239,11 @@ const disable_update_btn = computed(() => {
           :rules="[{ required: true }]"
         />
         <van-field
-          readonly
           type="textarea"
+          autosize
+          readonly
           label="访客链接"
           :model-value="visit_url"
-          autosize
         >
           <template #button>
             <van-button round size="small" type="primary" @click="handlerCopy"
