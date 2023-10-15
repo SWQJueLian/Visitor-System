@@ -7,7 +7,7 @@ import { wxWorkEmployeeInfoService } from '@/apis/oauth'
 const route = useRoute()
 const router = useRouter()
 const code = ref('')
-const userinfo = ref({})
+const userinfo = ref(null)
 
 code.value = route.query.code
 
@@ -17,7 +17,7 @@ const initPage = async () => {
   // console.log(response.data)
   userinfo.value = response.data
 
-  if (userinfo.value.userid !== '') {
+  if (userinfo.value) {
     sessionStorage.setItem('userinfo', JSON.stringify(userinfo.value))
     router.replace({ path: '/add-invite', query: { ...userinfo.value } })
   } else {
@@ -29,7 +29,7 @@ const initPage = async () => {
     })
       .then(() => {
         // on confirm
-        router.push('/oauth')
+        router.replace('/oauth')
       })
       .catch(() => {
         // on cancel
@@ -44,9 +44,9 @@ initPage()
 <template>
   <div>
     <!--oauth获取页面code-->
-    <p>CODE：{{ code }}</p>
-    <p>USERINFO：{{ userinfo }}</p>
-    <van-loading color="#1989fa" />
+    <!-- <p>CODE：{{ code }}</p> -->
+    <!-- <p>USERINFO：{{ userinfo }}</p> -->
+    <van-loading color="#1989fa">获取信息中...</van-loading>
   </div>
 </template>
 

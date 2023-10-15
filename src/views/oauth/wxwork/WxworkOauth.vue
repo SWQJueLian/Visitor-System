@@ -22,8 +22,8 @@ initPage()
   <div>
     <van-loading color="#1989fa" />
     <!--oauth获取页面-->
-    <p>url：{{ oauth_url }}</p>
-    <p>resp{{ resp_val }}</p>
+    <!-- <p>url：{{ oauth_url }}</p>
+    <p>resp{{ resp_val }}</p> -->
   </div>
 </template>
 
