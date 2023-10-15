@@ -51,7 +51,7 @@ const disable_update_btn = computed(() => {
 </script>
 
 <template>
-  <div v-if="!form_data">加载中...</div>
+  <van-loading v-if="!form_data" type="spinner" color="#1989fa" />
   <div v-else class="van-safe-area-bottom">
     <van-nav-bar fixed title="访客信息" safe-area-inset-top />
     <van-form

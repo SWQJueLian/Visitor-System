@@ -93,15 +93,19 @@ function handlerCopy() {
 }
 
 const disable_update_btn = computed(() => {
-  if (form_data.value.status == 1) {
+  if (form_data.value?.status == 1) {
     return true
   }
-  return isVisitDateExpired(form_data.value.status, form_data.value.visit_date)
+  return isVisitDateExpired(
+    form_data.value?.status,
+    form_data.value?.visit_date
+  )
 })
 </script>
 
 <template>
-  <div class="van-safe-area-bottom">
+  <van-loading v-if="!form_data" type="spinner" color="#1989fa" />
+  <div v-else class="van-safe-area-bottom">
     <van-nav-bar
       fixed
       title="访客详情"
