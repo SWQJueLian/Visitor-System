@@ -3,6 +3,9 @@
 
 必须对接企业微信内部H5应用，因为会自动授权并获取用户信息。
 
+## 在线演示
+https://www.bilibili.com/video/BV1qG41117ci?share_source=copy_web
+
 ## 添加邀请
 
 1. 支持车牌号键盘（已独立组件发布）
