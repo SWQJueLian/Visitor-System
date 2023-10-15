@@ -90,6 +90,8 @@ async function submitInvite() {
   // 2.2 重置表单
   resetForm()
   // showToast('添加成功！')
+  // set flag to refresh list
+  sessionStorage.setItem('is_current_add', 1)
 }
 
 // 初始化员工信息

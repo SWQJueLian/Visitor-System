@@ -55,6 +55,10 @@ async function handlerSearchButton() {
 
 onActivated(() => {
   console.log('myinvite activated')
+  if (sessionStorage.getItem('is_current_add') == 1) {
+    initInviteList()
+    sessionStorage.setItem('is_current_add', 0)
+  }
 })
 
 onDeactivated(() => {
