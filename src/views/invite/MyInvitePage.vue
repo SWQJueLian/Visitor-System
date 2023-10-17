@@ -28,7 +28,8 @@ const initInviteList = async () => {
   const data = {
     employee_id: employee_id,
     keyword: keyword.value,
-    datetime: pre_datetime.value || toDayFormatStr()
+    datetime: pre_datetime.value || toDayFormatStr(),
+    limit: 3 // 为了体验瀑布流加载（上拉自动加载更多），添加该参数方便控制。
   }
   //console.log(data)
   const resp = await inviteListService(data)
