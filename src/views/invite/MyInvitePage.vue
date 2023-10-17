@@ -2,43 +2,68 @@
 import { onActivated, onDeactivated, ref } from 'vue'
 import { inviteListService } from '@/apis/invite'
 import { useRouter } from 'vue-router'
-import { isVisitDateExpired } from '@/utils/tools'
+import { isVisitDateExpired, toDayFormatStr } from '@/utils/tools'
 
 const router = useRouter()
 const loading = ref(false)
 const finished = ref(false)
 const refreshing = ref(false)
 
-const invite_list = ref(null)
+const invite_list = ref([])
 const keyword = ref('')
+const udata = JSON.parse(sessionStorage.getItem('userinfo'))
+
+const pre_datetime = ref('')
+
 const initInviteList = async () => {
-  const resp = await inviteListService({
-    employee_id: JSON.parse(sessionStorage.getItem('userinfo'))['userid'],
-    keyword: keyword.value
-  })
+  console.log('触发initlist')
+  // 方便调试
+  let employee_id = ''
+  if (udata == null) {
+    employee_id = 'SongWeiQuan'
+  } else {
+    employee_id = udata['userid']
+  }
+  // end 方便调试
+  const data = {
+    employee_id: employee_id,
+    keyword: keyword.value,
+    datetime: pre_datetime.value || toDayFormatStr()
+  }
+  console.log(data)
+  const resp = await inviteListService(data)
   console.log(resp)
-  invite_list.value = resp.data
+  if (resp.data.results.length <= 0) {
+    finished.value = true
+  }
+  invite_list.value.push(...resp.data.results)
+  pre_datetime.value = resp.data.pre_datetime
+  console.log(pre_datetime.value)
 }
 
 // 初始化数据
-initInviteList()
+// 不用了，直接给onload自动触发，如不然首次会加载多一次
+// initInviteList()
 
 const handlerInviteDetail = (invite_id) => {
   router.push(`/invite-detail/${invite_id}`)
 }
 
 const onLoad = async () => {
+  console.log('触发onload函数')
   if (refreshing.value) {
     invite_list.value = []
     refreshing.value = false
   }
 
   await initInviteList()
+
   loading.value = false
-  finished.value = true
+
+  // finished.value = true
 }
 
-// 表示正处于刷新列表中
+// 表示正处于刷新列表中（）
 const onRefresh = () => {
   // 清空列表数据
   finished.value = false
@@ -50,7 +75,10 @@ const onRefresh = () => {
 }
 
 async function handlerSearchButton() {
+  invite_list.value = []
   await initInviteList()
+  // 这个必须放后面，不然逻辑就不对，和今夜页面一样，会出现多加载一次
+  finished.value = false
 }
 
 onActivated(() => {
