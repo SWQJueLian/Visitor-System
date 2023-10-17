@@ -112,7 +112,7 @@ onDeactivated(() => {
 </script>
 
 <template>
-  <div style="margin-bottom: 65px">
+  <div style="margin-bottom: 65px" class="van-safe-area-bottom">
     <!-- <van-nav-bar title="访客系统" safe-area-inset-top /> -->
     <van-form ref="formRef" colon show-error>
       <van-cell-group title="员工信息">

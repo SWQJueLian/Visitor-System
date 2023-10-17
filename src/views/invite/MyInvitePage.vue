@@ -66,7 +66,7 @@ onDeactivated(() => {
 })
 </script>
 <template>
-  <div id="list_box">
+  <div id="list_box" class="van-safe-area-bottom">
     <van-sticky>
       <van-search
         v-model="keyword"
@@ -79,6 +79,7 @@ onDeactivated(() => {
       </van-search>
     </van-sticky>
     <van-pull-refresh
+      :style="{ height: 'calc(100%-65px)' }"
       v-model="refreshing"
       @refresh="onRefresh"
       id="pull_refresh"
