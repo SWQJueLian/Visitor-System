@@ -76,6 +76,7 @@ const onRefresh = () => {
 }
 
 async function handlerSearchButton() {
+  pre_datetime.value = ''
   // 搜索前置空
   invite_list.value = []
   await initInviteList()
@@ -86,7 +87,7 @@ async function handlerSearchButton() {
 onActivated(() => {
   console.log('myinvite activated')
   if (sessionStorage.getItem('is_current_add') == 1) {
-    initInviteList()
+    handlerSearchButton()
     sessionStorage.setItem('is_current_add', 0)
   }
 })
