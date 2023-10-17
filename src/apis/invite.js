@@ -21,3 +21,8 @@ export const inviteDetailService = (invite_id) => {
 export const inviteUpdateService = (invite_id, data) => {
   return request.put(`/invite/${invite_id}/update/`, data)
 }
+
+// 修改邀请状态
+export const inviteStatusUpdateService = (invite_id, data) => {
+  return request.put(`/invite/${invite_id}/status_update/`, data)
+}

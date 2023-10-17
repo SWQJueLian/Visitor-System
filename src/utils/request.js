@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores'
 import { closeToast, showFailToast, showLoadingToast } from 'vant'
 import 'vant/es/toast/style'
 // 请求基础url
-const baseurl = 'https://95ac-116-22-23-243.ngrok-free.app'
+const baseurl = 'https://eaf5-116-22-21-228.ngrok-free.app'
 const baseapiurl = baseurl + '/api'
 
 // axios实例
