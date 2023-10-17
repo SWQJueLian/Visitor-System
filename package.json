@@ -27,6 +27,7 @@
     "@vue/eslint-config-prettier": "^8.0.0",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
+    "postcss-px-to-viewport": "^1.1.1",
     "prettier": "^3.0.3",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.9"
