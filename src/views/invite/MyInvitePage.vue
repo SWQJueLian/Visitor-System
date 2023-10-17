@@ -12,11 +12,11 @@ const refreshing = ref(false)
 const invite_list = ref([])
 const keyword = ref('')
 const udata = JSON.parse(sessionStorage.getItem('userinfo'))
-
+// 保存最后一个项目的datetime用于瀑布流刷新
 const pre_datetime = ref('')
 
 const initInviteList = async () => {
-  console.log('触发initlist')
+  //console.log('触发initlist')
   // 方便调试
   let employee_id = ''
   if (udata == null) {
@@ -30,15 +30,18 @@ const initInviteList = async () => {
     keyword: keyword.value,
     datetime: pre_datetime.value || toDayFormatStr()
   }
-  console.log(data)
+  //console.log(data)
   const resp = await inviteListService(data)
-  console.log(resp)
+  //console.log(resp)
+  // 没数据了就表示到尾了，设置finished为true, 阻止继续触发onload
   if (resp.data.results.length <= 0) {
     finished.value = true
   }
+  // 往头部追加
   invite_list.value.push(...resp.data.results)
+  // 保存pre_datetime
   pre_datetime.value = resp.data.pre_datetime
-  console.log(pre_datetime.value)
+  //console.log(pre_datetime.value)
 }
 
 // 初始化数据
@@ -57,10 +60,7 @@ const onLoad = async () => {
   }
 
   await initInviteList()
-
   loading.value = false
-
-  // finished.value = true
 }
 
 // 表示正处于刷新列表中（）
@@ -75,6 +75,7 @@ const onRefresh = () => {
 }
 
 async function handlerSearchButton() {
+  // 搜索前置空
   invite_list.value = []
   await initInviteList()
   // 这个必须放后面，不然逻辑就不对，和今夜页面一样，会出现多加载一次
