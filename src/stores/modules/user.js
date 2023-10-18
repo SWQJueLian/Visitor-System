@@ -5,11 +5,17 @@ import { ref } from 'vue'
 export const useUserStore = defineStore(
   'User',
   () => {
-    // 用户登录token
-    const token = ref('')
+    // 用户基础信息
+    const userinfo = ref({})
+
+    // 设置用户基础信息
+    const setUserinfo = (value) => {
+      userinfo.value = value
+    }
 
     return {
-      token
+      userinfo,
+      setUserinfo
     }
   },
   {

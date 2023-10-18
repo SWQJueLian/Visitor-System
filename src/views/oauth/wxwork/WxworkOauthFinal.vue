@@ -4,6 +4,8 @@ import 'vant/es/dialog/style'
 import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { wxWorkEmployeeInfoService } from '@/apis/oauth'
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const code = ref('')
@@ -18,7 +20,7 @@ const initPage = async () => {
   userinfo.value = response.data
 
   if (userinfo.value) {
-    sessionStorage.setItem('userinfo', JSON.stringify(userinfo.value))
+    userStore.setUserinfo(response.data)
     router.replace({ path: '/add-invite', query: { ...userinfo.value } })
   } else {
     console.error('获取员工id失败')

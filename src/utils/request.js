@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores'
 import { closeToast, showFailToast, showLoadingToast } from 'vant'
 import 'vant/es/toast/style'
 // 请求基础url
-const baseurl = 'https://eaf5-116-22-21-228.ngrok-free.app'
+const baseurl = 'https://02a1-116-22-21-73.ngrok-free.app'
 const baseapiurl = baseurl + '/api'
 
 // axios实例
@@ -25,7 +25,11 @@ axiosInstance.interceptors.request.use(
       duration: 20 * 1000 // toast展示最大时长（不要设置成0，无限不就卡死了?）
     })
     // 统一在请求前添加token
-    config.headers['Authorization'] = useUserStore().token
+    let access_token = useUserStore().userinfo?.access_token
+    if (access_token != null && access_token !== '') {
+      config.headers['Authorization'] = 'Bearer ' + access_token
+    }
+
     // 丢你妈的ngrok...
     config.headers['ngrok-skip-browser-warning'] = 'true'
     return config
@@ -51,7 +55,7 @@ axiosInstance.interceptors.response.use(
       closeToast()
       return data // (axios会多包装一层data，提前在响应前拦截并返回，减少后面需要resp.data.data之类的调用...)
     } else {
-      showFailToast(data.message + 'what?' || '未知错误')
+      showFailToast(data.message || '未知错误')
       return Promise.reject(data.message)
     }
   },

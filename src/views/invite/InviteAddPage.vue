@@ -81,9 +81,12 @@ async function submitInvite() {
   await formRef.value.validate()
   // console.log(formRef.value.getValues())
   // 2. 发送请求添加邀请
+  // await inviteAddService({
+  //   ...formRef.value.getValues(),
+  //   employee_id: employee_data.value['employee_id']
+  // })
   await inviteAddService({
-    ...formRef.value.getValues(),
-    employee_id: employee_data.value['employee_id']
+    ...formRef.value.getValues()
   })
   // 2.1 发送通知
   showNotify({ type: 'success', message: '邀请成功' })
@@ -95,12 +98,8 @@ async function submitInvite() {
 }
 
 // 初始化员工信息
-const employee_data = ref({})
-const userinfo_obj = JSON.parse(sessionStorage.getItem('userinfo'))
-console.log(JSON.parse(sessionStorage.getItem('userinfo')))
-employee_data.value['employee_name'] = userinfo_obj?.username
-employee_data.value['employee_department'] = userinfo_obj?.department_name
-employee_data.value['employee_id'] = userinfo_obj?.userid
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 
 onActivated(() => {
   console.log('addinvite activated')
@@ -117,15 +116,13 @@ onDeactivated(() => {
     <van-form ref="formRef" colon show-error>
       <van-cell-group title="员工信息">
         <van-field
-          v-model="employee_data.employee_name"
+          v-model="userStore.userinfo.username"
           readonly
-          name="employee_name"
           label="邀请人"
         />
         <van-field
-          v-model="employee_data.employee_department"
+          v-model="userStore.userinfo.department_name"
           readonly
-          name="employee_department"
           label="所属部门"
         />
       </van-cell-group>

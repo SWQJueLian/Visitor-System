@@ -11,22 +11,21 @@ const refreshing = ref(false)
 
 const invite_list = ref([])
 const keyword = ref('')
-const udata = JSON.parse(sessionStorage.getItem('userinfo'))
 // 保存最后一个项目的datetime用于瀑布流刷新
 const pre_datetime = ref('')
 
 const initInviteList = async () => {
   //console.log('触发initlist')
   // 方便调试
-  let employee_id = ''
-  if (udata == null) {
-    employee_id = 'SongWeiQuan'
-  } else {
-    employee_id = udata['userid']
-  }
+  // let employee_id = ''
+  // if (udata == null) {
+  //   employee_id = 'SongWeiQuan'
+  // } else {
+  //   employee_id = udata['userid']
+  // }
   // end 方便调试
   const data = {
-    employee_id: employee_id,
+    //employee_id: employee_id,
     keyword: keyword.value,
     datetime: pre_datetime.value || toDayFormatStr(),
     limit: 3 // 为了体验瀑布流加载（上拉自动加载更多），添加该参数方便控制。
