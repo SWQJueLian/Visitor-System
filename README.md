@@ -1,15 +1,12 @@
 # vistor-frontend
 基于Vue3、Vant4开发
 
-必须对接企业微信内部H5应用，因为会自动授权并获取用户信息。
-
-## 在线演示
-https://www.bilibili.com/video/BV1qG41117ci?share_source=copy_web
+必须对接企业微信内部H5应用，因为会自动进行oauth授权并获取用户信息。
 
 ## 添加邀请
 
 1. 支持车牌号键盘（已独立组件发布）
-2. 发送邀请后后端接受并入库，异步发送短信通知访客。
+2. 发送邀请后后端接受并入库，使用celery异步发送短信通知访客。
 
 ## 查看邀请
 
@@ -28,7 +25,9 @@ https://www.bilibili.com/video/BV1qG41117ci?share_source=copy_web
 
 ## 门卫扫码
 
-扫码后，可查看访客详情信息，点击【已到访】，向后端发送通知，后端对接企业微信发送消息给邀请人。
+扫码后，可查看访客详情信息，点击【已到访】，向后端触发celery异步任务，发送应用消息通知邀请人。
+![image](https://github.com/SWQJueLian/Visitor-System/assets/2834474/42ef1d60-6bdd-419d-9087-14201018072e)
+
 ## 添加邀请
 ![image](https://github.com/SWQJueLian/Visitor-System/assets/2834474/4eeafac5-a0fc-4bc2-a697-04c4d3d8b801)
 
