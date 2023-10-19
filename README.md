@@ -3,6 +3,8 @@
 
 必须对接企业微信内部H5应用，因为会自动进行oauth授权并获取用户信息。
 
+**API文档：https://apifox.com/apidoc/shared-f00a58b0-0a96-452e-b4f6-da27bca06835**
+
 ## 添加邀请
 
 1. 支持车牌号键盘（已独立组件发布）
