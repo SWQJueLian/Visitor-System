@@ -26,6 +26,17 @@ const show_confirm_dialog = ref(false)
 const showPWKeyboard = ref(false)
 const password = ref('')
 
+const checkbeforesubmit = () => {
+  // 前端也需要校验来访日期是否属于当天
+  let d1 = new Date(form_data.value.visit_date.split(' ')[0])
+  let d2 = new Date()
+  if (d1 > d2) {
+    showNotify({ type: 'success', message: '来访日期还未到达！' })
+    return
+  }
+  show_confirm_dialog.value = true
+}
+
 // 修改邀请
 async function submitInvite() {
   show_confirm_dialog.value = false
@@ -171,9 +182,9 @@ const disable_update_btn = computed(() => {
             round
             block
             type="primary"
-            @click="show_confirm_dialog = true"
+            @click="checkbeforesubmit"
           >
-            {{ disable_update_btn ? '已过期/已到访' : '访客到达' }}
+            {{ disable_update_btn ? '已过期/已到访' : '确定访客到达' }}
           </van-button>
         </div>
       </div>
