@@ -116,12 +116,12 @@ onDeactivated(() => {
     <van-form ref="formRef" colon show-error>
       <van-cell-group title="员工信息">
         <van-field
-          v-model="userStore.userinfo.username"
+          v-model="userStore.userinfo.employee_name"
           readonly
           label="邀请人"
         />
         <van-field
-          v-model="userStore.userinfo.department_name"
+          v-model="userStore.userinfo.employee_department"
           readonly
           label="所属部门"
         />
