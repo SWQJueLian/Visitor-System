@@ -3,7 +3,8 @@
 
 必须对接企业微信内部H5应用，因为会自动进行oauth授权并获取用户信息。
 
-#### 配套后端代码：https://github.com/SWQJueLian/Visitor-System-django
+#### 配套后端代码(django+drf框架版本)：https://github.com/SWQJueLian/Visitor-System-django
+#### 配套后端代码(flask+flask-restful+flask-sqlalchemy)：https://github.com/SWQJueLian/Visitor_System_flask
 #### API文档：https://apifox.com/apidoc/shared-f00a58b0-0a96-452e-b4f6-da27bca06835
 
 ## 添加邀请
