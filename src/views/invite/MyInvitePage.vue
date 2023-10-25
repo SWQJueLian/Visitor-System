@@ -1,7 +1,7 @@
 <script setup>
 import { onActivated, onDeactivated, ref } from 'vue'
 import { inviteListService } from '@/apis/invite'
-import { useRouter } from 'vue-router'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
 import { isVisitDateExpired, toDayFormatStr } from '@/utils/tools'
 
 const router = useRouter()
@@ -92,10 +92,17 @@ const is_add = () => {
 
 onActivated(() => {
   is_add()
+  // 设置滚动条位置
+  document.documentElement.scrollTop = localStorage.getItem('xscroll') || 0
 })
 
 onDeactivated(() => {
   console.log('myinvite deactivated')
+})
+
+onBeforeRouteLeave(() => {
+  // 记录滚动条位置
+  localStorage.setItem('xscroll', document.documentElement.scrollTop)
 })
 </script>
 <template>
